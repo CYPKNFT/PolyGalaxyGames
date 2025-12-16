@@ -1,0 +1,84 @@
+PolyCharacters Ability System Documentation
+===========================================
+
+Overview
+- Uses Lyra health/shield (`LyraHealthSet`) for damage routing; Poly damage execution feeds Lyra’s Damage meta so shields absorb first.
+- Poly adds attribute sets for stamina, elemental resistance, combat (offense/mitigation/movement), stealth, and heat.
+- Components expose attributes for UI/AI. A helper ensures sets are attached to the ASC.
+- Damage execution: `PolyDamageExecution` consumes `SetByCaller.Poly.Damage` + one `Poly.Damage.*` tag, applies power/crit/flatMit/block/resistance, and outputs damage to Lyra. (Source-side lifesteal/thorns/shield gain not applied here—use follow-up effects if needed.)
+
+Directory map (from Source/PolyCharactersRuntime)
+- Public/AbilitySystem/Attributes: attribute set headers (Stamina, ElementalResistance, Combat, Stealth, Heat).
+- Private/AbilitySystem/Attributes: implementations for the above sets.
+- Public/AbilitySystem/Executions: `PolyDamageExecution.h`.
+- Private/AbilitySystem/Executions: `PolyDamageExecution.cpp`.
+- Public/AbilitySystem: `PolyAttributeSetLibrary.h` (ASC helper).
+- Private/AbilitySystem: `PolyAttributeSetLibrary.cpp`.
+- Public/Character: components (Stamina, ElementalResistance, Combat).
+- Private/Character: component implementations.
+- Docs: this file.
+- Public/PolyGameplayTags.h & Private/PolyGameplayTags.cpp: damage type tags + SetByCaller tag.
+
+Gameplay tags
+- Damage types: `Poly.Damage.Radiation`, `Poly.Damage.Incendiary`, `Poly.Damage.Shock`, `Poly.Damage.Freeze`, `Poly.Damage.Poison`, `Poly.Damage.Nanite`.
+- SetByCaller: `SetByCaller.Poly.Damage`.
+- Stamina immunity/cheat: `Gameplay.Poly.StaminaImmunity`, `Cheat.Poly.UnlimitedStamina`.
+
+Attribute sets (key attributes and clamps)
+1) PolyStaminaSet
+   - Stamina, MaxStamina, Recuperating (meta).
+   - MoveSpeed (absolute sprint speed; default 900), SprintStaminaCostPerSecond (>=0).
+   - Clamps: Stamina 0..Max; MaxStamina >=1; MoveSpeed 0..3000; Cost >=0.
+   - Replicated; OnRep for all primary attributes; delegates: OnStaminaChanged, OnMaxStaminaChanged, OnOutOfStamina.
+
+2) PolyElementalResistanceSet
+   - ResistRadiation/Incendiary/Shock/Freeze/Poison/Nanite, all clamped 0..1.
+   - Replicated; OnRep per resistance.
+
+3) PolyCombatSet
+   - Offense: DamagePower, CritChance (0..1), CritMultiplier (>=1).
+   - Mitigation/reactive: FlatMitigation (>=0), BlockChance (0..1), BlockAmount (0..1), Thorns (0..1).
+   - Sustain: LifeSteal (0..1), ShieldGainOnHit (0..1).
+   - Utility/CC: Tenacity (0..1), MoveSpeedScalar (>0).
+   - Regen: HealthRegen, StaminaRegen, ShieldRegenRate (>=0).
+   - Clamps/replication per attribute.
+
+4) PolyStealthSet
+   - StealthFactor (>=0, capped ~2), DetectionResistance (0..1), InvisibilityStrength (0..1), RevealResistance (0..1), NoiseScalar (0..1), LightVisibilityScalar (0..1).
+   - Replicated; clamped.
+
+5) PolyHeatSet
+   - WantedLevel (0..7), HeatDecayRate (>=0), CrimeNotoriety (>=0), BribeCostScalar (>=0).
+   - Replicated; clamped.
+
+Components (Public/Character)
+- PolyStaminaComponent: Initializes with ASC, binds Stamina/MaxStamina change delegates, exposes getters and normalized stamina.
+- PolyElementalResistanceComponent: Initializes with ASC, binds resistance change delegates (per damage type), exposes getters.
+- PolyCombatComponent: Initializes with ASC, binds all combat attributes, exposes getters for UI/AI.
+
+Execution (PolyDamageExecution)
+- Inputs: `SetByCaller.Poly.Damage` magnitude + one `Poly.Damage.*` tag.
+- Source pulls: DamagePower, CritChance/CritMultiplier, LifeSteal, ShieldGainOnHit (currently not applied to source; see note).
+- Target pulls: FlatMitigation, BlockChance/BlockAmount, Thorns, ElementalResistance (matching damage type).
+- Flow: Power scale → Crit → FlatMitigation → Block → Elemental resistance → Final damage → apply to `LyraHealthSet::Damage`.
+- Note: Thorns, LifeSteal, ShieldGainOnHit are not applied to source in this execution (target-only). Use follow-up effects if needed.
+
+ASC helper
+- `UPolyAttributeSetLibrary::EnsurePolyAttributeSets(ASC, OutStamina, OutResist, OutCombat, OutStealth, OutHeat)`: attaches all Poly sets to the given ASC if missing.
+
+Usage patterns
+- Attach sets: Call EnsurePolyAttributeSets during pawn/feature initialization.
+- Apply defaults: Author a GameplayEffect to set baseline values (MoveSpeed, stamina cost, resistances, combat stats).
+- Elemental damage GE: Instant, execution = PolyDamageExecution, set `SetByCaller.Poly.Damage`, add exactly one `Poly.Damage.*` tag.
+- Sprinting (data-level): Set MoveSpeed in StaminaSet to sprint speed (e.g., 900) and drain stamina via periodic GE using SprintStaminaCostPerSecond.
+
+Directory-level quick reference
+- Public/AbilitySystem/Attributes: headers defining attributes and accessors.
+- Private/AbilitySystem/Attributes: replication, OnRep, clamps, defaults.
+- Public/Character: component headers (stamina, combat, elemental).
+- Private/Character: component implementations and delegate bindings.
+- Public/AbilitySystem/Executions: execution declaration.
+- Private/AbilitySystem/Executions: execution logic.
+- Public/PolyGameplayTags / Private/PolyGameplayTags: gameplay tag declarations/definitions.
+- Public/AbilitySystem/PolyAttributeSetLibrary / Private/...: helper to ensure sets on ASC.
+

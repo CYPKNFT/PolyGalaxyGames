@@ -14,10 +14,12 @@
 
 !/Plugins/GameFeatures/PolyCharacters/
 !/Plugins/GameFeatures/PolyCharacters/Source/
+!/Plugins/GameFeatures/PolyCharacters/Source/PolyCharactersRuntime/
 !/Plugins/GameFeatures/PolyCharacters/Source/PolyCharactersRuntime/**
 
 !/Plugins/GameFeatures/ShooterCore/
 !/Plugins/GameFeatures/ShooterCore/Source/
+!/Plugins/GameFeatures/ShooterCore/Source/ShooterCoreRuntime/
 !/Plugins/GameFeatures/ShooterCore/Source/ShooterCoreRuntime/**
 
 # Keep Cursor config
@@ -38,10 +40,12 @@
 
 !/Plugins/GameFeatures/PolyCharacters/
 !/Plugins/GameFeatures/PolyCharacters/Source/
+!/Plugins/GameFeatures/PolyCharacters/Source/PolyCharactersRuntime/
 !/Plugins/GameFeatures/PolyCharacters/Source/PolyCharactersRuntime/**
 
 !/Plugins/GameFeatures/ShooterCore/
 !/Plugins/GameFeatures/ShooterCore/Source/
+!/Plugins/GameFeatures/ShooterCore/Source/ShooterCoreRuntime/
 !/Plugins/GameFeatures/ShooterCore/Source/ShooterCoreRuntime/**
 
 # Keep Cursor config
