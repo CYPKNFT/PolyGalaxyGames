@@ -8,10 +8,7 @@ class UPolyElementalResistanceSet;
 class UPolyCombatSet;
 class UPolyStealthSet;
 class UPolyHeatSet;
-/**
- * Helper to ensure Poly attribute sets are present on an ASC.
- * Useful from GameFeature actions or pawn initialization.
- */
+// Helper to ensure all Poly attribute sets are present on an ASC (call during pawn/feature init).
 UCLASS()
 class POLYCHARACTERSRUNTIME_API UPolyAttributeSetLibrary : public UBlueprintFunctionLibrary
 {

@@ -1,0 +1,20 @@
+PolyElementalResistance – Damage Type Resistances
+=================================================
+
+Purpose
+- Provides per-type resistances for Poly damage tags: Radiation, Incendiary, Shock, Freeze, Poison, Nanite.
+- Feeds PolyDamageExecution to reduce incoming damage based on damage type.
+
+Key Attributes
+- ResistRadiation, ResistIncendiary, ResistShock, ResistFreeze, ResistPoison, ResistNanite.
+- Clamp: 0..1 for all resistances.
+- Replicated with OnRep per attribute.
+
+Component Integration
+- PolyElementalResistanceComponent binds attribute change delegates for UI/AI and exposes getters.
+- Initialize with ASC; requires the set present on the ASC (EnsurePolyAttributeSets).
+
+Usage
+- Set baseline resistances via GameplayEffects.
+- Apply elemental damage GEs with PolyDamageExecution and one Poly.Damage.* tag; execution reads the matching resistance and applies (1 - resist) to incoming damage.
+

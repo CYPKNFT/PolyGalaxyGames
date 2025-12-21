@@ -8,10 +8,7 @@
 
 #include "PolyStealthSet.generated.h"
 
-/**
- * Stealth / visibility-related attributes.
- * Most are normalized 0..1; StealthFactor is clamped to >=0 (buffs can raise it).
- */
+// Stealth/visibility attributes (stealth factor, detection/invisibility/reveal resistance, noise/light scalars). Replicated; clamps resistances/scalars to 0..1 and caps StealthFactor. For use by detection/visibility logic (not applied in damage).
 UCLASS(BlueprintType)
 class POLYCHARACTERSRUNTIME_API UPolyStealthSet : public ULyraAttributeSet
 {

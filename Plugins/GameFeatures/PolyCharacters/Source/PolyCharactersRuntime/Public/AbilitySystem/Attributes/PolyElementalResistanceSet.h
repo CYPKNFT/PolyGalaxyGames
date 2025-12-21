@@ -8,10 +8,7 @@
 
 #include "PolyElementalResistanceSet.generated.h"
 
-/**
- * Elemental resistance attributes for Poly damage types.
- * Values expected in [0..1]; clamped accordingly.
- */
+// Elemental resistances (Radiation/Incendiary/Shock/Freeze/Poison/Nanite), all clamped 0..1. Replicated for clients; read by PolyDamageExecution to scale incoming elemental damage.
 UCLASS(BlueprintType)
 class POLYCHARACTERSRUNTIME_API UPolyElementalResistanceSet : public ULyraAttributeSet
 {

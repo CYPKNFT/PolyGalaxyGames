@@ -8,9 +8,7 @@
 
 #include "PolyHeatSet.generated.h"
 
-/**
- * Wanted/heat-related attributes (crime/notoriety).
- */
+// Wanted/heat attributes (WantedLevel 0..7, decay rate, notoriety, bribe scalar). Replicated; clamps heat values; intended for AI/escalation logic.
 UCLASS(BlueprintType)
 class POLYCHARACTERSRUNTIME_API UPolyHeatSet : public ULyraAttributeSet
 {

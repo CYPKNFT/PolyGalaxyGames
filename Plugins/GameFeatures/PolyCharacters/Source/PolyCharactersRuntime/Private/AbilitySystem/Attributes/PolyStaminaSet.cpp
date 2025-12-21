@@ -20,7 +20,7 @@ UPolyStaminaSet::UPolyStaminaSet()
 	: Stamina(100.0f)
 	, MaxStamina(100.0f)
 	, Recuperating(0.0f)
-	, MoveSpeed(900.0f) // absolute sprint speed (walk is 600)
+	, MoveSpeed(600.0f) // absolute sprint speed (walk is 600)
 	, SprintStaminaCostPerSecond(15.0f)
 {
 	bOutOfStamina = false;
@@ -112,6 +112,11 @@ void UPolyStaminaSet::PostGameplayEffectExecute(const FGameplayEffectModCallback
 	else if (Data.EvaluatedData.Attribute == GetMaxStaminaAttribute())
 	{
 		OnMaxStaminaChanged.Broadcast(Data.EffectSpec.GetEffectContext().GetOriginalInstigator(), Data.EffectSpec.GetEffectContext().GetEffectCauser(), &Data.EffectSpec, Data.EvaluatedData.Magnitude, MaxStaminaBeforeAttributeChange, GetMaxStamina());
+	}
+	else if (Data.EvaluatedData.Attribute == GetMoveSpeedAttribute())
+	{
+		// Clamp sprint move speed after effects apply.
+		SetMoveSpeed(FMath::Clamp(GetMoveSpeed(), 0.0f, 1200.0f));
 	}
 
 	if (GetStamina() != StaminaBeforeAttributeChange)

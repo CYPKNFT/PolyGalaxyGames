@@ -7,10 +7,7 @@
 
 #include "PolyDamageExecution.generated.h"
 
-/**
- * Damage execution that applies simple per-type resistance scaling.
- * Expects a SetByCaller damage magnitude tagged with Poly damage type.
- */
+// Damage execution: consumes SetByCaller.Poly.Damage + one Poly.Damage.* tag; applies power/crit/flat mitigation/block/resistance; outputs to Lyra damage meta so shield/health logic applies. No source-side lifesteal/thorns here—apply via follow-up effects if needed.
 UCLASS()
 class POLYCHARACTERSRUNTIME_API UPolyDamageExecution : public UGameplayEffectExecutionCalculation
 {

@@ -1,0 +1,48 @@
+PolyComboComponent – Combo Tracking (Server-Driven)
+==================================================
+
+Purpose
+- Track successive hits within a time window. Increments on hits, resets after a timeout with no hits.
+- Expose events for UI/logic to react to combo changes or resets.
+
+Location
+- Component: Public/Character/PolyComboComponent.h, Private/Character/PolyComboComponent.cpp
+
+Core fields
+- ComboCount: current chain length.
+- LastHitTime: time (seconds) of the last registered hit.
+- ComboTimeout: max idle time (seconds) before the combo resets (default 2.0).
+- MaxComboRecorded: highest combo observed (for UI/telemetry).
+
+API
+- RegisterHit(HitTimeSeconds = -1, MinDamageThreshold = 0, DamageAmount = 0):
+  - Call from your hit/damage logic (server-side). If DamageAmount < MinDamageThreshold, it ignores the hit.
+  - If the combo already timed out, it resets before incrementing.
+  - Increments ComboCount, updates LastHitTime, updates MaxComboRecorded, fires OnComboChanged, and enables ticking while active.
+- GetComboCount(): current combo count.
+- GetTimeSinceLastHit(): seconds since the last hit; returns -1 if no hits recorded.
+
+Delegates
+- OnComboChanged(ComboComp, NewComboCount): fired on each increment.
+- OnComboReset(ComboComp): fired when combo resets (timeout or explicit reset).
+
+Tick/reset behavior
+- Ticks only while ComboCount > 0.
+- Each tick: if (Now - LastHitTime) >= ComboTimeout, ResetCombo() and fire OnComboReset.
+- Resets disable ticking until next hit.
+
+Integration points
+- Hook RegisterHit from your damage or ability hit events (server). If you want client UI, replicate ComboCount and bind UI to a replicated event or RPC (current implementation is server-only; extend replication if needed).
+- Optional: add gameplay tags when combo is active (not implemented by default). You can apply/remove a transient tag (e.g., Poly.State.ComboActive) on change/reset.
+- Optional: trigger rewards at thresholds by binding to OnComboChanged and checking ComboCount (e.g., at 3/5/8).
+
+Replication
+- Current implementation does not replicate fields. To show combos on clients, replicate ComboCount (and optionally MaxComboRecorded) and fire events in OnRep; keep LastHitTime server-side and compute the countdown on the server.
+
+Tuning
+- ComboTimeout: adjust per character/instance.
+- MinDamageThreshold: pass a value into RegisterHit if you want to ignore trivial hits.
+
+Notes
+- The component is stand-alone; it does not auto-attach to the ASC or modify damage executions. It expects you to call RegisterHit when a qualifying hit lands.
+

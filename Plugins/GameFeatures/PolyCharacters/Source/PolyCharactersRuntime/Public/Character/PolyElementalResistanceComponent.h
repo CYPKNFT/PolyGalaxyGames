@@ -16,9 +16,7 @@ class UPolyElementalResistanceSet;
 // Fired whenever a resistance attribute changes (e.g., buff/debuff).
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_FourParams(FResistance_AttributeChanged, UPolyElementalResistanceComponent*, ResistanceComponent, FGameplayTag, ResistanceTag, float, OldValue, float, NewValue);
 
-/**
- * Component exposing per-damage-type resistances.
- */
+// Component exposing per-damage-type resistances and change delegates (init with ASC). Reads PolyElementalResistanceSet and broadcasts on change.
 UCLASS(Blueprintable, Meta=(BlueprintSpawnableComponent))
 class POLYCHARACTERSRUNTIME_API UPolyElementalResistanceComponent : public UGameFrameworkComponent
 {

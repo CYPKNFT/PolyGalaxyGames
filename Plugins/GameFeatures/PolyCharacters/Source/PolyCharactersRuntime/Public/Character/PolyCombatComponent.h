@@ -15,9 +15,7 @@ class UPolyCombatSet;
 // Fired when any combat attribute changes; Attribute identifies which one.
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_FourParams(FCombatAttributeChanged, UPolyCombatComponent*, CombatComponent, FGameplayAttribute, Attribute, float, OldValue, float, NewValue);
 
-/**
- * Thin component to surface PolyCombatSet attributes to Blueprint/UI/AI.
- */
+// Component to surface PolyCombatSet attributes to Blueprint/UI/AI (init with ASC); broadcasts attribute changes for HUD/logic.
 UCLASS(Blueprintable, Meta=(BlueprintSpawnableComponent))
 class POLYCHARACTERSRUNTIME_API UPolyCombatComponent : public UGameFrameworkComponent
 {

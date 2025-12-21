@@ -1,0 +1,26 @@
+PolyStaminaSet – Stamina & Sprint Attributes
+============================================
+
+Purpose
+- Holds stamina values and sprint-related parameters.
+- Routes stamina replication and clamps; provides change delegates for HUD/logic.
+
+Key Attributes
+- Stamina: current stamina (replicated, clamped 0..MaxStamina).
+- MaxStamina: cap for stamina (replicated, clamped >=1).
+- Recuperating: meta attribute converted into Stamina and then cleared.
+- MoveSpeed: absolute sprint speed (default 900; walk is 600).
+- SprintStaminaCostPerSecond: stamina drain rate while sprinting (>=0).
+
+Replication & Clamps
+- Replicated: Stamina, MaxStamina, MoveSpeed, SprintStaminaCostPerSecond.
+- Clamps: Stamina 0..MaxStamina; MaxStamina >=1; MoveSpeed 0..3000; SprintStaminaCostPerSecond >=0.
+
+Delegates
+- OnStaminaChanged, OnMaxStaminaChanged, OnOutOfStamina (for HUD/logic).
+
+Intended Usage
+- Attach via EnsurePolyAttributeSets during ASC init.
+- Author GameplayEffects to set baseline stamina and MoveSpeed (e.g., sprint speed).
+- Apply periodic stamina drain for sprint using SprintStaminaCostPerSecond (GameplayEffect tick) and stop sprint when stamina reaches zero.
+

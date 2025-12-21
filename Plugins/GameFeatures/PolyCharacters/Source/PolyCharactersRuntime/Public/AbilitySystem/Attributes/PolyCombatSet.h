@@ -8,10 +8,7 @@
 
 #include "PolyCombatSet.generated.h"
 
-/**
- * Offense/mitigation/utility attributes for Poly characters.
- * All floats; clamps keep values in reasonable ranges.
- */
+// Offense/mitigation/utility/regeneration attributes (power, crit, block, thorns, lifesteal, regen, movement scalar). Replicated; clamps chances/fractions to 0..1, crit mult >=1, movement >0, regen/mitigation >=0. Used by PolyDamageExecution for combat math.
 UCLASS(BlueprintType)
 class POLYCHARACTERSRUNTIME_API UPolyCombatSet : public ULyraAttributeSet
 {

@@ -20,9 +20,7 @@ namespace PolyGameplayTags
 	POLYCHARACTERSRUNTIME_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Cheat_UnlimitedStamina);
 }
 
-/**
- * Stamina attribute set.
- */
+// Stamina attributes including sprinting (absolute MoveSpeed and stamina cost). Replicated; clamps stamina 0..Max, MoveSpeed to a safe range, and sprint cost >= 0. Uses Lyra ASC events for HUD/logic via delegates.
 UCLASS(BlueprintType)
 class POLYCHARACTERSRUNTIME_API UPolyStaminaSet : public ULyraAttributeSet
 {
@@ -35,8 +33,9 @@ public:
 	ATTRIBUTE_ACCESSORS(UPolyStaminaSet, Stamina);
 	ATTRIBUTE_ACCESSORS(UPolyStaminaSet, MaxStamina);
 	ATTRIBUTE_ACCESSORS(UPolyStaminaSet, Recuperating);
-	// Sprinting: absolute move speed while sprinting and costs
 	ATTRIBUTE_ACCESSORS(UPolyStaminaSet, MoveSpeed);
+
+	// Sprinting: absolute move speed while sprinting and costs
 	ATTRIBUTE_ACCESSORS(UPolyStaminaSet, SprintStaminaCostPerSecond);
 
 	mutable FLyraAttributeEvent OnStaminaChanged;
@@ -52,6 +51,7 @@ protected:
 
 	UFUNCTION()
 	void OnRep_MoveSpeed(const FGameplayAttributeData& OldValue);
+
 	UFUNCTION()
 	void OnRep_SprintStaminaCostPerSecond(const FGameplayAttributeData& OldValue);
 

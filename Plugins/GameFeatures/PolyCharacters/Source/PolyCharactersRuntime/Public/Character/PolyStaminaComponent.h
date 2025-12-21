@@ -14,9 +14,7 @@ class UPolyStaminaSet;
 // Fired when stamina/max stamina changes.
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_ThreeParams(FStamina_AttributeChanged, UPolyStaminaComponent*, StaminaComponent, float, OldValue, float, NewValue);
 
-/**
- * Component for stamina access and notifications.
- */
+// Component exposing stamina attributes and change delegates (init with ASC). Listens to PolyStaminaSet and provides getters/normalized values.
 UCLASS(Blueprintable, Meta=(BlueprintSpawnableComponent))
 class POLYCHARACTERSRUNTIME_API UPolyStaminaComponent : public UGameFrameworkComponent
 {
