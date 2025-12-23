@@ -1,9 +1,9 @@
 // Copyright Epic Games, Inc. All Rights Reserved.
-+
+
 #include "Character/PolyComboComponent.h"
-+
+
 #include "Engine/World.h"
-+
+
 UPolyComboComponent::UPolyComboComponent(const FObjectInitializer& ObjectInitializer)
 	: Super(ObjectInitializer)
 {
@@ -15,12 +15,12 @@ UPolyComboComponent::UPolyComboComponent(const FObjectInitializer& ObjectInitial
 	LastHitTime = -1.0f;
 	MaxComboRecorded = 0;
 }
-+
+
 void UPolyComboComponent::BeginPlay()
 {
 	Super::BeginPlay();
 }
-+
+
 void UPolyComboComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
@@ -40,7 +40,7 @@ void UPolyComboComponent::TickComponent(float DeltaTime, ELevelTick TickType, FA
 		SetComponentTickEnabled(false);
 	}
 }
-+
+
 void UPolyComboComponent::RegisterHit(float HitTimeSeconds, float MinDamageThreshold, float DamageAmount)
 {
 	// Optional filter: ignore trivial hits.
@@ -69,7 +69,7 @@ void UPolyComboComponent::RegisterHit(float HitTimeSeconds, float MinDamageThres
 		SetComponentTickEnabled(true);
 	}
 }
-+
+
 float UPolyComboComponent::GetTimeSinceLastHit() const
 {
 	if (LastHitTime < 0.0f)
@@ -78,7 +78,7 @@ float UPolyComboComponent::GetTimeSinceLastHit() const
 	}
 	return GetWorld() ? (GetWorld()->GetTimeSeconds() - LastHitTime) : -1.0f;
 }
-+
+
 void UPolyComboComponent::ResetCombo()
 {
 	if (ComboCount != 0)
@@ -88,4 +88,7 @@ void UPolyComboComponent::ResetCombo()
 	}
 	LastHitTime = -1.0f;
 }
+
+
+
 

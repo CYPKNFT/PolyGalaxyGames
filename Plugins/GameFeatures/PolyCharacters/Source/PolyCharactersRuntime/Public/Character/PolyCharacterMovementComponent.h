@@ -2,7 +2,7 @@
 
 #pragma once
 
-#include "LyraCharacterMovementComponent.h"
+#include "Character/LyraCharacterMovementComponent.h"
 
 #include "PolyCharacterMovementComponent.generated.h"
 

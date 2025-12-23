@@ -6,14 +6,13 @@
 #include "AbilitySystemGlobals.h"
 #include "AbilitySystem/Attributes/PolyStaminaSet.h"
 #include "GameplayTagContainer.h"
-#include "LyraGameplayTags.h"
 
 float UPolyCharacterMovementComponent::GetMaxSpeed() const
 {
 	// Preserve Lyra's movement-stopped tag handling.
 	if (const UAbilitySystemComponent* ASC = UAbilitySystemGlobals::GetAbilitySystemComponentFromActor(GetOwner()))
 	{
-		if (ASC->HasMatchingGameplayTag(LyraGameplayTags::Status_MovementStopped))
+		if (ASC->HasMatchingGameplayTag(TAG_Gameplay_MovementStopped))
 		{
 			return 0.0f;
 		}

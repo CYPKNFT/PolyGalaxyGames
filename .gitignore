@@ -26,29 +26,3 @@
 !.cursor/
 !.cursor/rules/
 !.cursor/rules/codacy.mdc
-
-# Allow git to track this file
-!/.gitignore
-
-# Allow project source
-!/Source/
-!/Source/**
-
-# Allow specific game feature runtimes
-!/Plugins/
-!/Plugins/GameFeatures/
-
-!/Plugins/GameFeatures/PolyCharacters/
-!/Plugins/GameFeatures/PolyCharacters/Source/
-!/Plugins/GameFeatures/PolyCharacters/Source/PolyCharactersRuntime/
-!/Plugins/GameFeatures/PolyCharacters/Source/PolyCharactersRuntime/**
-
-!/Plugins/GameFeatures/ShooterCore/
-!/Plugins/GameFeatures/ShooterCore/Source/
-!/Plugins/GameFeatures/ShooterCore/Source/ShooterCoreRuntime/
-!/Plugins/GameFeatures/ShooterCore/Source/ShooterCoreRuntime/**
-
-# Keep Cursor config
-!.cursor/
-!.cursor/rules/
-!.cursor/rules/codacy.mdc
